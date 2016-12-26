@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html ng-app="store">
+
+<head>
+  <link rel="stylesheet" type="text/css" href="bootstrap.min.css" />
+  <script type="text/javascript" src="angular.min.js"></script>
+  <script type="text/javascript" src="app.js"></script>
+</head>
+
+<body ng-controller="StoreController as str">
+  <ul class="list-group">
+    <li class="list-group-item">
+
+      <div ng-repeat="product in str.products | orderBy:'-name'" ng-hide="product.soldOut">
+
+        <p>{{product.name | uppercase }}
+          <em class="pull-right">{{product.price | currency }}</em>
+          <img ng-src="{{product.image[0].full}}" /></p>
+        <section ng-controller="PanelController as panel">
+          <ul class="nav nav-pills">
+            <li ng-class="{active :panel.isSelected(1) }">
+              <a href ng-click="panel.selectTab(1)">Description</a></li>
+            <li ng-class="{active :panel.isSelected(2)}">
+              <a href ng-click="panel.selectTab(2)">Specifications</a></li>
+            <li ng-class="{active :panel.isSelected(3)}">
+              <a href ng-click="panel.selectTab(3)">Reviews</a></li>
+          </ul>
+          <div class="panel" ng-show="panel.isSelected(1)">
+            <h4>Description</h4>
+            <p>{{product.description}}</p>
+          </div>
+          <div class="panel" ng-show="panel.isSelected(2)">
+            <h4>Specifications</h4>
+            <blackquote>None Yet</blackquote>
+          </div>
+          <div class="panel" ng-show="panel.isSelected(3)">
+            <h4>Reviews</h4>
+            <blackquote ng-repeat="review in product.reviews">
+              <form name="reviewForm">
+                <select>
+                  <option value="1">1 star</option>
+                  <option value="2">2 stars</option>
+                  <option value="3">3 stars</option>
+				  <option value="4">4 stars</option>
+				  <option value="5">5 stars</option>
+                </select>
+                <textarea></textarea>
+                <label>by:</label>
+                <input type="email" />
+                <input type="submit" value="Submit" />
+              </form>
+              <p><b>stars:{{review.stars}}</b>
+                <b>{{review.comment}}</b>
+                <cite>author:{{review.author}}</cite></p>
+            </blackquote>
+          </div>
+        </section>
+
+      </div>
+    </li>
+  </ul>
+</body>
+
+</html>
